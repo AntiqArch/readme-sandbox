@@ -1,9 +1,5 @@
- 
-
-<div align="left">
 
 # Hello, World!
-
 
 > <sub>In the of this section there is arrows explaining words that could be hard to understand this will work as a diconary</sub>
 
@@ -11,28 +7,36 @@ This is a simple "Hello, world!" project that demonstrates how to use the [Fixed
 
 <div align=left>
 <details>
-<summary><b>Telegraf</b></summary>
+<summary><b>What is Telegraf?</b></summary>
 
-It is a program that collects information from computers and systems,
+an agent that collects information from computers and systems. This is only possible because of plugins, small building blocks that each handle one specific task
 
 </details>
 </div>
 
+## How it works
 
-</div>
+The data moves through three stages:
 
-## How it works 
+**1. Two inputs create data**
 
+Both inputs use the `inputs.mock` plugin, which generates fake test data.
+- The first input creates a "Hello, World!" message plus a random number and a fixed number. It runs on the global interval, which is once per minute by default.
+- The second input creates a sine wave every 5 seconds.
 
+**2. One output collects it**
 
+All data is sent to the `outputs.file` plugin, which turns it into JSON text and prints it.
 
-This project defines two inputs that will run on an interval and produce some numeric metrics and a "Hello, World!" message. We make use of the `inputs.mock` plugin to generate the input data randomly. One input runs on the globally configured interval, and the other input runs on a more frequent interval. The `outputs.file` plugin is used to print all metrics to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs` tab.
+**3. You see it in the Logs tab**
+
+The FixedIT Data Agent captures the printed text and shows it in the **Logs** tab.
 
 Color scheme:
 
 - Light green: Input nodes / data ingestion
-- Red: Output nodes / notifications
-- Light gray: Configuration data
+- Light red: Output nodes
+- Light gray: Configuration and agent
 
 ```mermaid
 flowchart TD
@@ -52,136 +56,25 @@ flowchart TD
     style A2 fill:#90EE90,stroke:#43a047,color:#000000
     style C fill:#ffebee,stroke:#e53935,color:#000000
 ```
+## Why this approach?
 
+Normally, building an app that runs directly on an Axis camera means learning the ACAP SDK and writing C or C++. With the FixedIT Data Agent, you only write a config file, and Telegraf does the rest. This makes it possible for developers, system integrators and IT professionals to build their own automations on the camera.
 
-## Why Choose This Approach?
+This project is the smallest possible example: two inputs, one output and nothing else. It's a good starting point for understanding how the agent's configuration works.
 
-With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
-
-This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the logs tab of the FixedIT Data Agent. It's a great starting point for understanding the basics of the agent's configuration system.
-
-<div align=left>
 <details>
-<summary><b>ACAP</b></summary>
-lets you build custom edge-computing applications that run directly on Axis network devices (such as cameras, intercoms, and speakers)
-</details>
-</div>
+<summary><b>What is ACAP?</b></summary>
 
-<div align=left>
+ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
+
+</details>
+
 <details>
-<summary><b>SDK</b></summary>
-An SDK (Software Development Kit) is a ready-made package of tools, code libraries, documentation, and examples that help programmers build software for a specific platform or device.
+<summary><b>What is an SDK?</b></summary>
+
+An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
+
 </details>
-</div>
 
-## Table of Contents
 
-<!-- toc -->
 
-- [Compatibility](#compatibility)
-  - [AXIS OS Compatibility](#axis-os-compatibility)
-  - [FixedIT Data Agent Compatibility](#fixedit-data-agent-compatibility)
-- [Quick Setup](#quick-setup)
-- [Files](#files)
-- [Configuration Details](#configuration-details)
-- [Local Testing on Host](#local-testing-on-host)
-  - [Prerequisites](#prerequisites)
-  - [Test Commands](#test-commands)
-- [Integrating with InfluxDB](#integrating-with-influxdb)
-
-<!-- tocstop -->
-
-## Compatibility
-
-### AXIS OS Compatibility
-
-- **Minimum AXIS OS version**: No special requirements
-- **Required tools**: None
-
-### FixedIT Data Agent Compatibility
-
-- **Minimum Data Agent version**: 1.3
-- **Required features**: `inputs.mock` which was added in v1.3.0 and the `SYNC_INTERVAL_SECONDS` environment variable added in FixedIT Data Agent v1.1.
-
-## Quick Setup
-
-1. **Disable the default config files**
-
-The FixedIT Data Agent comes with default config files for collecting system metrics and sending them to a database. Since we don't want to use those now, click the `Disable` button next to the "Bundled config files"
-in the "Configuration" tab of the FixedIT Data Agent.
-
-![Disable bundled config files](.images/bundled-configs.png)
-
-2. **Upload and enable the `config.conf` file to the FixedIT Data Agent**
-
-Click the `Upload Config` button in the "Configuration" tab of the FixedIT Data Agent and upload the `config.conf` file. Then press the `Enable` button next to the `config.conf` file.
-
-![Upload config](.images/config-page.png)
-
-3. **Go to the "Logs" tab and verify the data**
-
-It might take a few seconds before Telegraf has been restarted with the new config file. After this, you should see the "Hello, World!" messages appearing as JSON in the Logs tab at two different intervals:
-
-- One message following the global interval (defaults to 60 seconds in the FixedIT Data Agent but can be changed from the application settings) with `message`, `random_value` and `static_value` fields
-- Another message every 5 seconds with the `sine_wave` field
-
-![Logs tab](.images/logs-page.png)
-
-4. **Reconfigure the FixedIT Data Agent variables:**
-
-   The `config.conf` file is making use of the `SYNC_INTERVAL_SECONDS` and `TELEGRAF_DEBUG` environment variables. You can configure these in the "Settings" tab of the FixedIT Data Agent by going back to the camera web interface, going to the "Apps" section, pressing the three dots next to the FixedIT Data Agent and selecting "Settings". Try changing the "Sync interval seconds" to 10 seconds and the "Debug mode" to true.
-
-   ![Plain settings](.images/settings.png)
-
-   You should now see the global interval message appearing every 10 seconds instead. By scrolling down to the bottom of the logs where you find the internal Telegraf logs (by default printed to the "Standard Error" section), you will now see more verbose log messages such as `Wrote batch of 3 metrics in 4.322833ms` and `Buffer fullness: 0 / 10000 metrics`. This means that the metrics was successfully written to the output (`output.file` plugin) and that the buffer is now empty waiting for the next batch of metrics.
-
-## Files
-
-- `config.conf` - Combined configuration file containing both inputs and the output configuration
-
-## Configuration Details
-
-The project uses the following components:
-
-1. **Input Configurations**
-   - Global interval input: Uses the exec input plugin to run an echo command every `SYNC_INTERVAL_SECONDS` seconds.
-   - Override interval input: Same as above, but every 5 seconds regardless of the value of the `SYNC_INTERVAL_SECONDS` variable.
-
-2. **Output Configuration**
-   - Uses the file output plugin configured to write to stdout
-   - Data format is set to "json"
-
-3. **Data Flow**
-   - By default, all inputs are connected to all outputs.
-
-## Local Testing on Host
-
-You can test this project locally using Telegraf before deploying to your Axis device.
-
-### Prerequisites
-
-- Install Telegraf on your development machine
-
-### Test Commands
-
-Run Telegraf with the configuration file:
-
-```bash
-telegraf --config config.conf
-```
-
-You should now see some internal Telegraf logs on `stderr` and the JSON messages with the "Hello, World!" string appearing every now and then on `stdout`.
-
-You can override the default values of the environment variables used in the `config.conf` file (which are automatically set by the FixedIT Data Agent when running the project in the Axis device). On Linux, export the two environment variables:
-
-```bash
-export SYNC_INTERVAL_SECONDS="10"
-export TELEGRAF_DEBUG="true"
-```
-
-On Windows, in PowerShell, set the environment variables by running:
-
-```PowerShell
-$env:SYNC_INTERVAL_SECONDS = "10"
-$env:TELEGRAF_DEBUG = "true"
-```
