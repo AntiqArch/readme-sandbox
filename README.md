@@ -1,6 +1,6 @@
 # Hello, World!
 
-This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
+This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the [Telegraf](#telegraf) process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
 
 ## How It Works
 
@@ -54,7 +54,7 @@ flowchart TD
 
 ## Why Choose This Approach?
 
-With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
+With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis [ACAP](#acap) [SDK](#sdk), C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
 
 This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the `Logs->Pipeline Data` tab. It's a great starting point for understanding the basics of the agent's configuration system.
 
@@ -206,29 +206,18 @@ In this guide, we only exposed the data in the "Logs->Pipeline Data" tab of the 
 
 
 ## Glossary
-<details>
-<summary><b>What is Telegraf?<b></summary>
+
+### Telegraf
 
 Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
 
-</details>
-
-
-
-<details>
-<summary><b>What is ACAP?</b></summary>
+### ACAP
 
 ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
 
-</details>
-
-<details>
-<summary><b>What is an SDK?</b></summary>
+### SDK
 
 An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
-
-</details>
-
 
 
 [def]: .images/config-page.png
