@@ -207,6 +207,15 @@ In this guide, we only exposed the data in the "Logs->Pipeline Data" tab of the 
 
 ## Test Yourself
 <details>
+<summary><b>What is Telegraf?<b></summary>
+
+Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
+
+</details>
+
+
+
+<details>
 <summary><b>What is ACAP?</b></summary>
 
 ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
