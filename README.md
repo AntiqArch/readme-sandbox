@@ -205,7 +205,7 @@ You should now see some internal Telegraf logs on `stderr` and JSON metrics on `
 In this guide, we only exposed the data in the "Logs->Pipeline Data" tab of the FixedIT Data Agent. To produce real value, you can use other outputs such as InfluxDB, MQTT, cURL, etc. As a next step, see the [project-hello-world-exec](../project-hello-world-exec/) project.
 
 
-## Test Yourself
+## Glossary
 <details>
 <summary><b>What is Telegraf?<b></summary>
 
