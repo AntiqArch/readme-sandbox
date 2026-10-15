@@ -6,39 +6,26 @@ This is a simple "Hello, world!" project that demonstrates how to use the [Fixed
 
 The data flows through three stages:
 
-**1. Inputs generate data**
+1. Inputs generate data
 
-Both inputs use the `inputs.mock` plugin to generate random test data.
-- The first input creates a "Hello, World!" message plus a random number and a fixed number. It runs on the global interval, which is once per minute by default.
-- The second input creates a sine wave every 5 seconds.
+This project defines two inputs that run on an interval and produce numeric metrics and a "Hello, World!" message.
+Both inputs use the inputs.mock plugin to generate input data randomly.
 
-**2. The output prints the data**
+One input runs on the globally configured interval.
 
-The `outputs.file` plugin prints all data as JSON text to the standard output of the Telegraf process.
+The other input runs on a more frequent interval.
 
-**3. The FixedIT Data Agent displays the data**
+2. The output prints the data
 
-The FixedIT Data Agent captures the printed text and shows it in the **Logs → Pipeline Data** tab.
+The outputs.file plugin prints all metrics to the standard output of the Telegraf process.
 
+3. The FixedIT Data Agent displays the data
+
+The FixedIT Data Agent captures the output from the Telegraf process and displays it in the Logs → Pipeline Data tab.
+
+<div>
+_______________
 </div>
-
-## How it works
-
-The data moves through three stages:
-
-**1. Two inputs create data**
-
-Both inputs use the `inputs.mock` plugin, which generates fake test data.
-- The first input creates a "Hello, World!" message plus a random number and a fixed number. It runs on the global interval, which is once per minute by default.
-- The second input creates a sine wave every 5 seconds.
-
-**2. One output collects it**
-
-All data is sent to the `outputs.file` plugin, which turns it into JSON text and prints it.
-
-**3. You see it in the Logs tab**
-
-The FixedIT Data Agent captures the printed text and shows it in the **Logs** tab.
 
 Color scheme:
 
