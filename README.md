@@ -3,7 +3,7 @@
 
 > <sub>In the of this section there is arrows explaining words that could be hard to understand this will work as a diconary</sub>
 
-This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs` tab.
+This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the [Telegraf](#telegraf) process, which will be captured by the FixedIT Data Agent and displayed in the `Logs` tab.
 
 <div align=left>
 <details>
@@ -21,8 +21,10 @@ The data moves through three stages:
 **1. Two inputs create data**
 
 Both inputs use the `inputs.mock` plugin, which generates fake test data.
-- The first input creates a "Hello, World!" message plus a random number and a fixed number. It runs on the global interval, which is once per minute by default.
-- The second input creates a sine wave every 5 seconds.
+The first input creates a "Hello, World!" message plus a random number and a fixed number. It runs on the global interval, which is once per minute by default.
+
+The second input creates a sine wave every 5 seconds
+
 
 **2. One output collects it**
 

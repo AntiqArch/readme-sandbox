@@ -180,3 +180,112 @@ telegraf --config config.conf
 ```
 
 You should now see some internal Telegraf logs on `stderr` and the JSON messages with the "Hello, World!" string appearing every now and then on `stdout`.
+
+
+# 👋 Hello, World! with the exec input plugin
+
+In this guide, you will build a "Hello, World!" project where Telegraf runs a shell command on an Axis camera and shows the result in the FixedIT Data Agent.
+
+**After this guide, you can:** let Telegraf run a command and see its output in the Logs tab, and send the data on to an InfluxDB database.
+**Time:** about 15 minutes · **Requires:** FixedIT Data Agent 1.1 or later
+
+> [!TIP]
+> New to the FixedIT Data Agent? Start with the [Hello, World! guide](../fixedit-hello-world/) first. This guide builds on it.
+
+## Table of Contents
+
+- [What's different from the first Hello, World!?](#whats-different-from-the-first-hello-world)
+- [Why this approach?](#why-this-approach)
+- [How it works](#how-it-works)
+- [Step 1 of 3 – Disable the default config files](#step-1-of-3--disable-the-default-config-files)
+- [Step 2 of 3 – Upload the config file](#step-2-of-3--upload-the-config-file)
+- [Step 3 of 3 – Change the interval](#step-3-of-3--change-the-interval)
+- [Bonus – Send the data to InfluxDB](#bonus--send-the-data-to-influxdb)
+- [For those who want to know more](#-for-those-who-want-to-know-more)
+- [Glossary](#-glossary)
+
+---
+
+## What's different from the first Hello, World!?
+
+In the first guide, Telegraf **made up** test data with the `inputs.mock` plugin. In this guide, Telegraf **runs a real command** with the `inputs.exec` plugin and uses what the command prints as data.
+
+The command here is just `echo "Hello, World!"`, but the idea is bigger: if Telegraf can run `echo`, it can run any command or script and collect the result.
+
+This guide also shows how to send the data to an InfluxDB database instead of only showing it in the logs.
+
+---
+
+## Why this approach?
+
+Normally, building an app that runs directly on an Axis camera means learning the ACAP SDK and writing C or C++. With the FixedIT Data Agent, you only write a config file, and Telegraf does the rest. This makes it possible for developers, system integrators and IT professionals to build their own automations on the camera.
+
+<details>
+<summary><b>What is ACAP?</b></summary>
+
+ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
+
+</details>
+
+---
+
+## How it works
+
+> [!NOTE]
+> You don't need to do anything yet. This section explains what will happen when you follow the steps below.
+
+The data moves through three stages:
+
+**1. Two inputs run a command**
+
+Both inputs use the `inputs.exec` plugin to run `echo "Hello, World!"`. Whatever the command prints becomes the data.
+- The first input runs on the global interval, which is once per minute by default.
+- The second input runs every 5 seconds.
+
+<details>
+<summary>What is the exec plugin?</summary>
+
+`exec` is short for *execute*. The plugin runs a command, just like when you type it in a terminal, and turns the output into data that Telegraf can send on.
+
+</details>
+
+**2. One output collects it**
+
+All data is sent to the `outputs.file` plugin, which turns it into JSON text and prints it.
+
+**3. You see it in the Logs tab**
+
+The FixedIT Data Agent captures the printed text and shows it in the **Logs** tab.
+
+<details>
+<summary>📊 Show as diagram</summary>
+
+Color scheme:
+
+- Light green: Input nodes
+- Light red: Output nodes
+- Light gray: Configuration and agent
+
+```mermaid
+flowchart TD
+    X0["⚙️ Configuration Variables:<br/>SYNC_INTERVAL_SECONDS, TELEGRAF_DEBUG"] --> X1
+    X1["Telegraf Agent"] --> A1
+    X1 --> A2
+
+    X2["Configuration override:<br/>'interval'"] --> A2
+
+    A1["📥 Exec Input 1<br/>echo, global interval"] --> C
+    A2["📥 Exec Input 2<br/>echo, every 5 s"] --> C
+    C["📤 Output to stdout<br/>JSON format"] --> D
+    D["📋 Logs tab"]
+
+    style X0 fill:#f5f5f5,stroke:#9e9e9e,color:#000000
+    style X1 fill:#f5f5f5,stroke:#9e9e9e,color:#000000
+    style X2 fill:#f5f5f5,stroke:#9e9e9e,color:#000000
+    style A1 fill:#90EE90,stroke:#43a047,color:#000000
+    style A2 fill:#90EE90,stroke:#43a047,color:#000000
+    style C fill:#ffebee,stroke:#e53935,color:#000000
+    style D fill:#ffebee,stroke:#e53935,color:#000000
+```
+
+</details>
