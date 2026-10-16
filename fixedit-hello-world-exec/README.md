@@ -186,6 +186,8 @@ flowchart TD
     style D3 fill:#F1FCF1,stroke:#24a9e1,color:#000000
     style C fill:#FFF9FA,stroke:#ff0000,color:#000000
     style C2 fill:#FFF9FA,stroke:#24a9e1,color:#000000
+
+   linkStyle 0,1,5,6 stroke:#ff0000
 ```
 
 ## Advanced: Local Testing on Host
