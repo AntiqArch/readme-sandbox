@@ -188,6 +188,7 @@ flowchart TD
     style C2 fill:#FFF9FA,stroke:#24a9e1,color:#000000
 
    linkStyle 0,1,5,6 stroke:#ff0000
+   linkStyle 2,3,4,7,8,9 stroke:#24a9e1
 ```
 
 ## Advanced: Local Testing on Host
