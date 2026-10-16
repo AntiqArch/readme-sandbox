@@ -1,12 +1,28 @@
 # Hello, World! (with exec input plugin)
 
-This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
+This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the [Telegraf](#glossary) process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
 
 This is very similar to the [project-hello-world](../project-hello-world/) project, but instead of using the `inputs.mock` plugin to generate the input data, we are using the `inputs.exec` plugin to run a shell command. This guide also adds the [Running the Example Together with the Default Config Files](#running-the-example-together-with-the-default-config-files) section to show how to send the data to an InfluxDB database and use it there.
 
 ## How It Works
 
-This project defines two inputs that will run on an interval and produce a "Hello, World!" message. We make use of the `inputs.exec` plugin to run the `echo` command which will output the message. One input runs on the globally configured interval, and the other input runs on a more frequent interval. The `outputs.file` plugin is used to print all metrics to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
+The data flows through three stages:
+
+1. Inputs generate data
+
+This project defines two inputs that will run on an interval and produce a "Hello, World!" message. We make use of the `inputs.exec` plugin to run the `echo` command which will output the message.
+
+One input runs on the globally configured interval.
+
+The other input runs on a more frequent interval.
+
+2. The output prints the data
+
+The `outputs.file` plugin is used to print all metrics to the standard output of the Telegraf process.
+
+3. The FixedIT Data Agent displays the data
+
+The standard output of the Telegraf process will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
 <div>
 _______________
 </div>
@@ -38,7 +54,7 @@ flowchart TD
 
 ## Why Choose This Approach?
 
-With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
+With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis [ACAP](#glossary) [SDK](#glossary), C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
 
 This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the `Logs->Pipeline Data` tab of the FixedIT Data Agent. It's a great starting point for understanding the basics of the agent's configuration system.
 
@@ -141,7 +157,10 @@ The same is true for the new inputs that you created, the "Hello, World!" messag
 
 ![The data explorer in InfluxDB](.images/influxdb.png)
 
-All inputs are sent to all outputs (bundled plugins with blue border, new plugins with red border):
+All inputs are sent to all outputs. 
+
+- Bundled plugins - blue border.
+- New plugins - red border.
 
 ```mermaid
 flowchart TD
@@ -195,3 +214,17 @@ telegraf --config config.conf --non-strict-env-handling
 ```
 
 You should now see some internal Telegraf logs on `stderr` and JSON metrics on `stdout`, including `hello_world_global` every `SYNC_INTERVAL_SECONDS` seconds and `hello_world_override` every 5 seconds.
+
+## Glossary
+
+### Telegraf
+
+Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
+
+### ACAP
+
+ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
+
+### SDK
+
+An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
