@@ -3,7 +3,7 @@
 This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
 
 <details>
-<summary> What is Telegraf? </summary>
+<summary><strong> What is Telegraf? </strong></summary>
 Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
 </details>
 
@@ -63,14 +63,14 @@ flowchart TD
 With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
 
 <details>
-<summary> What is ACAP? </summary>
+<summary><strong> What is ACAP? </strong></summary>
 ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
 </details>
 
 ---
 
 <details>
-<summary> What is an SDK? </summary>
+<summary><strong> What is an SDK? </strong></summary>
 An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
 </details>
 
@@ -80,7 +80,7 @@ This simple project demonstrates how to configure different inputs with differen
 
 ## Table of Contents
 <details open>
-<summary>Show / Hide Table</summary>
+<summary><strong> Show / Hide Table </strong></summary>
 <!-- toc -->
 
 - [Compatibility](#compatibility)
