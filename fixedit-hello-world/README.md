@@ -5,12 +5,17 @@ This is a simple "Hello, world!" project that demonstrates how to use the [Fixed
 <details>
 <summary><strong> What is Telegraf? </strong></summary>
 Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
+
+---
+
+The FixedIT Data Agent is an advanced wrapper around the [Telegraf](https://www.influxdata.com/time-series-platform/telegraf/) software, which is a platform that allows the creation of custom processes using input plugins, output plugins and different kinds of processors, filters and aggregators.
+
+By default, the FixedIT Data Agent comes preloaded with a configuration for advanced monitoring of the Axis devices, but this configuration can be extended or replaced with your own custom one.
 </details>
 
 ## How It Works
 
-### Step - 1
-#### Inputs generate data.
+### 1. Inputs generate metrics.
 
 This project defines two inputs that run on an interval and produce numeric metrics and a "Hello, World!" message.
 Both inputs use the `inputs.mock` plugin to generate input data randomly.
@@ -19,11 +24,15 @@ One input runs on the globally configured interval.
 
 The other input runs on a more frequent interval.
 
-### Step - 2
+---
+
+### 2. Output writes metrics to stdout.
 
 The `outputs.file` plugin prints all metrics to the standard output of the Telegraf process.
 
-### Step - 3
+---
+
+### 3. "stdout" is displayed in the logs.
 
 The FixedIT Data Agent captures the output from the Telegraf process and displays it in the Logs → Pipeline Data tab.
 
@@ -56,23 +65,10 @@ flowchart TD
 
 ## Why Choose This Approach?
 
-With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
+With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the [Axis ACAP SDK](https://www.axis.com/for-developers/acap), C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
 
 This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the `Logs->Pipeline Data` tab. It's a great starting point for understanding the basics of the agent's configuration system.
 
----
-
-<details>
-<summary><strong> What is ACAP? </strong></summary>
-ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
-</details>
-
----
-
-<details>
-<summary><strong> What is an SDK? </strong></summary>
-An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
-</details>
 
 ## Table of Contents
 <details open>
@@ -111,13 +107,13 @@ An SDK (Software Development Kit) is a package of tools, code libraries, documen
 
    The FixedIT Data Agent comes with default config files for collecting system metrics and sending them to a database. Since we don't want to use those now, click the `Disable` button next to the "Bundled config files" in the "Configuration->Files" tab of the FixedIT Data Agent.
 
-   ![Upload config](.images/bundled-configs.png)
+   ![Bundled Configs](.images/bundled-configs.png)
 
 2. **Upload and enable the `config.conf` file to the FixedIT Data Agent**
 
    Click the `Upload Config` button in the "Configuration->Files" tab of the FixedIT Data Agent and upload the `config.conf` file. Then press the `Enable` button next to the `config.conf` file.
 
-   ![Upload config](.images/config-page.png)
+   ![Config Page](.images/config-page.png)
 
 3. **Go to the "Logs->Pipeline Data" tab and verify the metrics**
 
