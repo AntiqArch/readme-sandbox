@@ -62,6 +62,10 @@ flowchart TD
 
 With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
 
+This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the `Logs->Pipeline Data` tab. It's a great starting point for understanding the basics of the agent's configuration system.
+
+---
+
 <details>
 <summary><strong> What is ACAP? </strong></summary>
 ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
@@ -73,10 +77,6 @@ ACAP (Axis Camera Application Platform) lets you build custom applications that 
 <summary><strong> What is an SDK? </strong></summary>
 An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
 </details>
-
----
-
-This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the `Logs->Pipeline Data` tab. It's a great starting point for understanding the basics of the agent's configuration system.
 
 ## Table of Contents
 <details open>
