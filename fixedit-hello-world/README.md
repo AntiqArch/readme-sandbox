@@ -9,8 +9,6 @@ Telegraf is an open-source agent for collecting, processing, and sending metrics
 
 ## How It Works
 
-### The data flows through three stages:
-
 ### Step - 1
 #### Inputs generate data.
 
@@ -22,12 +20,10 @@ One input runs on the globally configured interval.
 The other input runs on a more frequent interval.
 
 ### Step - 2
-#### The output prints the metrics.
 
 The `outputs.file` plugin prints all metrics to the standard output of the Telegraf process.
 
 ### Step - 3
-#### View the pipeline data.
 
 The FixedIT Data Agent captures the output from the Telegraf process and displays it in the Logs → Pipeline Data tab.
 
