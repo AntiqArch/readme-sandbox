@@ -7,8 +7,6 @@ This is a simple "Hello, world!" project that demonstrates how to use the [Fixed
 Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
 </details>
 
----
-
 ## How It Works
 
 ### The data flows through three stages:
