@@ -125,6 +125,9 @@ flowchart TD
 
 ## Table of Contents
 
+<details open>
+<summary> Table Of Contents </summary>
+
 <!-- toc -->
 
 - [Compatibility](#compatibility)
@@ -175,6 +178,8 @@ flowchart TD
 
 <!-- tocstop -->
 
+</details>
+
 ## Compatibility
 
 ### AXIS OS Compatibility
@@ -193,7 +198,7 @@ This section includes quick setup instructions for the project. You can find mor
 
 First, press disable on the bundled config files to ensure they are not interfering with the project's files.
 
-![Disable bundled config files](../.images/configuration-page-disable-bundled.png)
+![Disable bundled config files](.images/configuration-page-disable-bundled.png)
 
 Upload [`generated/time_in_area.conf`](./generated/time_in_area.conf) as a config file and enable it. This single file contains the full alert and overlay pipeline (including inlined `.star` and `.sh` helpers) and duplicates detection metrics as `time_in_area_frame` so you can add InfluxDB output later without changing the main config. To regenerate it after changing individual config files, see [Generate time_in_area.conf](#generate-time_in_areaconf).
 
