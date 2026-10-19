@@ -1,31 +1,39 @@
 # Hello, World!
 
-This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the [Telegraf](#telegraf) process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
+This is a simple "Hello, world!" project that demonstrates how to use the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) to print messages to the standard output of the Telegraf process, which will be captured by the FixedIT Data Agent and displayed in the `Logs->Pipeline Data` tab.
+
+<details>
+<summary> What is Telegraf? </summary>
+Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
+</details>
+
+---
 
 ## How It Works
 
-The data flows through three stages:
+### The data flows through three stages:
 
-1. Inputs generate data
+### Step - 1
+#### Inputs generate data.
 
 This project defines two inputs that run on an interval and produce numeric metrics and a "Hello, World!" message.
-Both inputs use the inputs.mock plugin to generate input data randomly.
+Both inputs use the `inputs.mock` plugin to generate input data randomly.
 
 One input runs on the globally configured interval.
 
 The other input runs on a more frequent interval.
 
-2. The output prints the data
+### Step - 2
+#### The output prints the metrics.
 
-The outputs.file plugin prints all metrics to the standard output of the Telegraf process.
+The `outputs.file` plugin prints all metrics to the standard output of the Telegraf process.
 
-3. The FixedIT Data Agent displays the data
+### Step - 3
+#### View the pipeline data.
 
 The FixedIT Data Agent captures the output from the Telegraf process and displays it in the Logs → Pipeline Data tab.
 
-<div>
-_______________
-</div>
+---
 
 Color scheme:
 
@@ -54,13 +62,27 @@ flowchart TD
 
 ## Why Choose This Approach?
 
-With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis [ACAP](#acap) [SDK](#sdk), C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
+With the FixedIT Data Agent, you can create your own edge-based workflows and automations that run directly in the Axis devices. You can do this without knowing anything about the Axis ACAP SDK, C and C++ programming. This makes the edge available to a much wider audience of developers, system integrators and IT professionals.
+
+<details>
+<summary> What is ACAP? </summary>
+ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
+</details>
+
+---
+
+<details>
+<summary> What is an SDK? </summary>
+An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
+</details>
+
+---
 
 This simple project demonstrates how to configure different inputs with different intervals in the FixedIT Data Agent and how to propagate that data to the `Logs->Pipeline Data` tab. It's a great starting point for understanding the basics of the agent's configuration system.
 
 ## Table of Contents
 <details open>
-<summary>Table of Contents</summary>
+<summary>Show / Hide Table</summary>
 <!-- toc -->
 
 - [Compatibility](#compatibility)
@@ -73,7 +95,6 @@ This simple project demonstrates how to configure different inputs with differen
   - [Prerequisites](#prerequisites)
   - [Test Commands](#test-commands)
 - [Integrating with InfluxDB](#integrating-with-influxdb)
-- [Glossary](#glossary)
 
 <!-- tocstop -->
 </details>
@@ -204,19 +225,3 @@ You should now see some internal Telegraf logs on `stderr` and JSON metrics on `
 ## Integrating with InfluxDB
 
 In this guide, we only exposed the data in the "Logs->Pipeline Data" tab of the FixedIT Data Agent. To produce real value, you can use other outputs such as InfluxDB, MQTT, cURL, etc. As a next step, see the [project-hello-world-exec](../project-hello-world-exec/) project.
-
-
-## Glossary
-
-### Telegraf
-
-Telegraf is an open-source agent for collecting, processing, and sending metrics and other data using a plugin-based architecture.
-
-### ACAP
-
-ACAP (Axis Camera Application Platform) lets you build custom applications that run directly on Axis devices, such as cameras, intercoms and speakers.
-
-### SDK
-
-An SDK (Software Development Kit) is a package of tools, code libraries, documentation and examples that help programmers build software for a specific platform.
-
