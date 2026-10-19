@@ -1,8 +1,27 @@
 ﻿# InfluxDB and Grafana Monitoring Stack
 
-This directory contains a complete system monitoring stack designed to work with the **FixedIT Data Agent** running on Axis devices.
+This directory contains a complete system monitoring stack designed to work with the [FixedIT Data Agent](https://fixedit.ai/products-data-agent/) running on Axis devices.
 
 **After this guide, you can:** run [InfluxDB](#influxdb) and [Grafana](#grafana) on your own computer and see system metrics from your Axis cameras in ready-made dashboards.
+
+<details>
+<summary><strong> What is InfluxDB? </strong></summary>
+
+A database built for time-series data, which means measurements that change over time, such as CPU usage or network traffic. In this stack, it stores the data your cameras send.
+
+</details>
+
+---
+
+<details>
+<summary><strong> What is Grafana? </strong></summary>
+
+A tool that reads data from a database, here InfluxDB, and shows it as graphs and dashboards.
+
+</details>
+
+
+---
 
 > This guide uses Docker. If you don't have Docker installed or don't know what it is, see [Getting started with Docker](#getting-started-with-docker). Otherwise, just keep reading.
 
@@ -11,7 +30,7 @@ This directory contains a complete system monitoring stack designed to work with
 ## Table of Contents
 
 <details open> 
-<summary> Table of Contents </summary>
+<summary><strong> Hide / Show Table </strong></summary>
 
 <!-- toc -->
 
@@ -34,7 +53,6 @@ This directory contains a complete system monitoring stack designed to work with
 - [Using an older version of the FixedIT Data Agent](#using-an-older-version-of-the-fixedit-data-agent)
 - [Known Issues and Limitations](#known-issues-and-limitations)
 - [Helper Scripts](#helper-scripts)
-- [Glossary](#glossary)
 - [Getting started with docker](#getting-started-with-docker)
 <!-- tocstop -->
 
