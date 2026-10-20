@@ -139,7 +139,7 @@ flowchart TD
 
 ### Example with Push Notifications
 
-      This example builds on the simple example above. The same configuration also sends notifications, so here you subscribe to the topic on your phone and adjust the optional variables.
+  This example builds on the simple example above. The same configuration also sends notifications, so here you subscribe to the topic on your phone and adjust the optional variables.
 
 1. **Pick a topic name.**
 
