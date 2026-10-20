@@ -119,9 +119,13 @@ flowchart TD
 
    In the camera web interface, go to Analytics → AXIS Image Health Analytics, start the application, and leave the detections you care about enabled (blocked, redirected, blurred, underexposed).
 
+![Axis-Image-Health-Analytics](.images/axis-image-health-analytics.png)
+
 2. **Disable the bundled config files**
 
    The FixedIT Data Agent ships default configs that collect system metrics. Click Disable next to Bundled config files on the Configuration tab so this example is the only pipeline.
+
+   ![Disable-Config](.images/bundled-configs.png)
 
 3. **Set the ntfy topic URL**
 
