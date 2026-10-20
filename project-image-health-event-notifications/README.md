@@ -58,7 +58,7 @@ This project implements two main features:
 
 The project uses the [ntfy](https://ntfy.sh/) service to send real-time notifications to a phone or computer when the AXIS Image Health Analytics detects an image health event.
 
-If too many activations occur within a short period of time, one higher priority notification is sent and further notifications are muted while the alarm keeps flickering. See the variable table in Quick Setup for `NOTIFY_MAX_BEFORE_PAUSE` and `ALARM_QUIET_PERIOD`.
+If too many activations occur within a short period of time, one higher priority notification is sent and further notifications are muted while the alarm keeps flickering. See the variable table in [Quick Setup](#quick-setup) for `NOTIFY_MAX_BEFORE_PAUSE` and `ALARM_QUIET_PERIOD`.
 
 ---
 
