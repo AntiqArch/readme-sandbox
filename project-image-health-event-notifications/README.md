@@ -6,9 +6,12 @@ This project demonstrates how to subscribe to events from [AXIS Image Health Ana
 
 Axis devices produce a steady stream of metadata and alarms. Operators are expected to act on that stream, and a busy scene quickly turns into a flood of notifications. Built-in filters cover the common cases. They often cannot express the rule a site actually needs, such as "tell me when the image is blocked, but stop nagging me when heavy rain or snow keeps the same alarm firing for hours or days."
 
-Turning that alarm off by hand is easy to forget to turn back on. The FixedIT Data Agent is where the rule lives instead. You describe which events matter, how often is too often, and where the result should go, and you can change those choices per site without building a new application. The camera then follows the rule, and operators see the alarms worth acting on.
+Turning that alarm off by hand is easy to forget to turn back on. The FixedIT Data Agent is where the rule lives instead. You describe which events matter, how often is too often, and where the result should go and you can change those choices per site without building a new application. The camera then follows the rule, and operators see the alarms worth acting on.
 
 ## Table of Contents
+
+<details open>
+<summary><strong> Show / Hide Table </strong></summary>
 
 <!-- toc -->
 
@@ -31,34 +34,60 @@ Turning that alarm off by hand is easy to forget to turn back on. The FixedIT Da
 
 <!-- tocstop -->
 
+</details>
+
 ## Compatibility
 
 ### AXIS OS Compatibility
 
-- **Minimum AXIS OS version**: TODO
+- **Minimum AXIS OS version**: AXIS OS 12.0
 - **Required tools**: [AXIS Image Health Analytics](https://www.axis.com/products/axis-image-health-analytics) must be installed and started (preinstalled on compatible cameras with AXIS OS 12.0 or later).
-- **Other notes**: TODO
+- **Other notes**: The camera needs outbound HTTPS access to the [ntfy](https://ntfy.sh) server or a self-hosted instance. Only the detections that are
+  enabled in AXIS Image Health Analytics generate events.
 
 ### FixedIT Data Agent Compatibility
 
 - **Minimum Data Agent version**: 1.7
-- **Required features**: Subcription support in the `event_handler` which was added in version 1.7.
+- **Required features**: Subscription support in the `event_handler` which was added in version 1.7.
 
 ## How It Works
 
 This project implements two main features:
 
-1. Send real-time notifications to a phone or computer using the [ntfy](https://ntfy.sh/) service when the AXIS Image Health Analytics detects an image health event. If too many activations occur within a short period of time, send one higher priority notification and then mute the notifications while the alarm is still flickering. This is configured with the `ALARM_QUIET_PERIOD` and `NOTIFY_MAX_BEFORE_PAUSE` environment variables. The latter is the maximum number notifications before muting the alarm and the former is the silence period after which the notifications are unmuted again.
+### 1. Real-time notifications are sent when an image health event is detected.
 
-2. Send a regular summary of the number of alarms within a period of time. The notification is sent only when there has been at least one alarm during that period. This could for example be an hourly digest of how many alarms have occurred during the last hour. The reporting period is configured with the `STATS_PERIOD` environment variable.
+The project uses the [ntfy](https://ntfy.sh/) service to send real-time notifications to a phone or computer when the AXIS Image Health Analytics detects an image health event.
+
+If too many activations occur within a short period of time, one higher priority notification is sent and further notifications are muted while the alarm keeps flickering. See the variable table in Quick Setup for `NOTIFY_MAX_BEFORE_PAUSE` and `ALARM_QUIET_PERIOD`.
+
+---
+
+### 2. A regular summary reports the number of alarms within a period of time.
+
+The notification is sent only when there has been at least one alarm during that period. This could for example be an hourly digest of how many alarms have occurred during the last hour. The reporting period is configured with the `STATS_PERIOD` environment variable.
+
+---
+
+### The configuration can be modified to disable or change either feature.
 
 If only one of these two features is needed, the configuration file can easily be modified to disable or change the behavior that does not fit the needs.
 
+### The ntfy service sends notifications without requiring registration or installation.
+
 The [ntfy](https://ntfy.sh/) service can easily be used without any registration or installation using their test server. For real deployments, a paid plan or the free self-hosted server are available. The project is fully open source.
 
-![Phone notification that Block alarm notifications are paused due to flickering](./.images/rate-limited-image-health-analytics-events.jpg)
+
+![Phone notification that Block alarm notifications are paused due to flickering](.images/rate-limited-image-health-analytics-events.jpg)
 
 The following diagram shows a simplified view of the data flow.
+
+---
+
+Color scheme:
+
+- Light green: Input nodes / data ingestion
+- Red: Output nodes / notifications
+- Light gray: Configuration data
 
 ```mermaid
 flowchart TD
@@ -72,14 +101,14 @@ flowchart TD
     E --> H
     G --> H
 
-    style A fill:#e8f5e9,stroke:#43a047
-    style B fill:#f3e5f5,stroke:#8e24aa
-    style C fill:#ffffff,stroke:#8e24aa
-    style D fill:#f3e5f5,stroke:#8e24aa
-    style E fill:#f3e5f5,stroke:#8e24aa
-    style F fill:#f5f5f5,stroke:#9e9e9e
-    style G fill:#f3e5f5,stroke:#8e24aa
-    style H fill:#ffebee,stroke:#e53935
+    style A fill:#e8f5e9,stroke:#43a047,color:#000000
+    style B fill:#f3e5f5,stroke:#8e24aa,color:#000000
+    style C fill:#ffffff,stroke:#8e24aa,color:#000000
+    style D fill:#f3e5f5,stroke:#8e24aa,color:#000000
+    style E fill:#f3e5f5,stroke:#8e24aa,color:#000000
+    style F fill:#f5f5f5,stroke:#9e9e9e,color:#000000
+    style G fill:#f3e5f5,stroke:#8e24aa,color:#000000
+    style H fill:#ffebee,stroke:#e53935,color:#000000
 ```
 
 ## Quick Setup
@@ -94,25 +123,102 @@ flowchart TD
 
    The FixedIT Data Agent ships default configs that collect system metrics. Click Disable next to Bundled config files on the Configuration tab so this example is the only pipeline.
 
-3. **Upload and enable `config.conf`**
+3. **Set the ntfy topic URL**
 
-   Click Upload Config and upload `config.conf`. Then enable it.
+   The configuration also sends notifications to ntfy. On the Configuration tab, open Variables → "Extra Telegraf variables" and add `NTFY_TOPIC_URL` with the value `https://ntfy.sh/<your-topic>`, using a topic name that is hard to guess, for example `axis-image-health-7f3k9q2x`. You can ignore the notifications for now and just watch the Logs tab.
 
-4. **Open the Logs tab**
+4. **Upload and enable `image-health-to-ntfy.conf`**
+
+   Click Upload Config and upload `image-health-to-ntfy.conf`. Then enable it.
+
+5. **Open the Logs tab**
 
    Go to the `Logs -> Pipeline Data` tab and you should see the first state being reported. Since the event is stateful, the first report will be the current state. The next report will come whenever the state changes.
 
+   ---
+
 ### Example with Push Notifications
 
-TODO
+      This example builds on the simple example above. The same configuration also sends notifications, so here you subscribe to the topic on your phone and adjust the optional variables.
+
+1. **Pick a topic name.**
+
+   ntfy topics work like public channels without passwords, so choose something hard to guess, for example `axis-image-health-7f3k9q2x`. If you already chose a topic in the simple example, you can keep using it.
+
+2. **Subscribe on your phone or computer.**
+
+   Install the ntfy app (or open https://ntfy.sh/app in a browser) and subscribe to your topic.
+
+3. **Set the variables.**
+
+   On the Configuration tab, open Variables → "Extra Telegraf variables" and add:
+
+   | Variable | Required | Default | Description |
+   |---|---|---|---|
+   | `NTFY_TOPIC_URL` | Yes | – | Full topic URL, e.g. `https://ntfy.sh/axis-image-health-7f3k9q2x`. Already set in the simple example above. |
+   | `NOTIFY_MAX_BEFORE_PAUSE` | No | 5 | Number of activation notifications per cause before further ones are muted. A single "paused" notification is sent when this number is exceeded. |
+   | `ALARM_QUIET_PERIOD` | No | 1h | How long a cause must stay quiet before its counter resets and notifications resume |
+   | `STATS_PERIOD` | No | 1h | Interval for the summary notification |
+
+4. **Upload and enable `image-health-to-ntfy.conf`.**
+
+   If it is not already enabled, upload and enable it as in the simple example.
+
+5. **Trigger a test alarm**, for example by covering the lens, and check that a notification arrives on your phone and that the event shows up in the Logs tab.
+
+The notifications look like this:
+
+| Notification | Priority | Sent when |
+|---|---|---|
+| Alarm activated | high | An alarm activates and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
+| No longer alarming | default | An alarm clears (not sent for the initial state) and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
+| Notifications paused | max | The activation count reaches `NOTIFY_MAX_BEFORE_PAUSE` + 1, sent once |
+| Digest | default | Once per `STATS_PERIOD`, only if there was at least one alarm |
+
+---
+
+<strong> The notifications look like this: </strong>
+
+| Notification | Priority | Sent when |
+|---|---|---|
+| Alarm activated | high | An alarm activates and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
+| No longer alarming | default | An alarm clears (not sent for the initial state) and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
+| Notifications paused | max | The activation count reaches `NOTIFY_MAX_BEFORE_PAUSE` + 1, sent once |
+| Digest | default | Once per `STATS_PERIOD`, only if there was at least one alarm |
 
 ## Files
 
-TODO
+- `image-health-to-ntfy.conf` – The complete pipeline: event subscription,
+  counting and muting logic, logging to the Logs tab, and notifications and
+  digest to ntfy.
 
 ## Configuration Details
 
-TODO
+`image-health-to-ntfy.conf` is built from these stages, in the order they appear in the file.
+
+1. **Input** (`inputs.execd`) – Subscribes to the stateful
+   `AXISImageHealthAnalytics` event through `event_handler`.
+2. **State-change counter** (`processors.defaults` + `cumulative_sum`) –
+   Gives every event `state_change = 1` and a running total
+   `state_change_sum`, used to skip the first "clear".
+3. **Split** (`processors.override`) – Renames events to
+   `health_event_activated` and `health_event_deactivated`.
+4. **Cause as tag** (`processors.converter`) – Turns the `Cause` field into a
+   tag so each cause gets its own counters.
+5. **Summary** (`aggregators.valuecounter`) – Counts activations per cause and
+   emits `image_health_stats` every `STATS_PERIOD`.
+6. **Incident counter** (`processors.defaults` + `inputs.mock` +
+   `cumulative_sum`) – Adds `incident = 1` and a running total
+   `incident_sum` per cause. The mock input sends a dummy metric every second
+   so counters expire as soon as `ALARM_QUIET_PERIOD` has passed.
+7. **Muting** (`processors.clone`) – Creates `*_notify` copies of events at or
+   below `NOTIFY_MAX_BEFORE_PAUSE`, and one
+   `health_event_notifications_paused` metric when the limit is exceeded.
+8. **Outputs** – `outputs.file` prints to the Logs tab and `outputs.http`
+   posts to ntfy. Each message type has its own output with its own title and
+   priority.
+
+---
 
 ### The Value Counter Aggregator
 
@@ -182,4 +288,4 @@ On the other hand, if the state is already alarming when the agent starts:
 
 This implementation is intentionally created without any scripting to keep it simple and easy to understand for non-programmers. This design choice leads to some limitations. The two main limitations are that activations and deactivations of alarms are silenced independently. This means that the duration of the alarms plays a role and it can happen that either the activation or deactivation is silenced while the other one is not. The other problem is that there is no notification telling the user when a paused notification goes back to normal.
 
-Both of these problems can be solved by replacing some of the built-in processors and aggregators for a scriped processor (Python-like Starlark) instead.
+Both of these problems can be solved by replacing some of the built-in processors and aggregators for a scripted processor (Python-like Starlark) instead.
