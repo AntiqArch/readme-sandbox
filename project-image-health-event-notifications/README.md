@@ -143,6 +143,8 @@ flowchart TD
 
    Go to the `Logs -> Pipeline Data` tab and you should see the first state being reported. Since the event is stateful, the first report will be the current state. The next report will come whenever the state changes.
 
+   ![Pipeline-Data](.images/pipeline-data.png)
+
    ---
 
 ### Example with Push Notifications
