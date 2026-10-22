@@ -163,7 +163,7 @@ flowchart TD
 
    On the Configuration tab, open Variables → "Extra Telegraf variables" and add:
 
-   | Variable | Required | Default | Description |
+   | Variable Name | Required | Default | Description |
    |---|---|---|---|
    | `NTFY_TOPIC_URL` | Yes | – | Full topic URL, e.g. `https://ntfy.sh/axis-image-health-7f3k9q2x`. Already set in the simple example above. |
    | `NOTIFY_MAX_BEFORE_PAUSE` | No | 5 | Number of activation notifications per cause before further ones are muted. A single "paused" notification is sent when this number is exceeded. |
@@ -176,25 +176,9 @@ flowchart TD
 
 5. **Trigger a test alarm**, for example by covering the lens, and check that a notification arrives on your phone and that the event shows up in the Logs tab.
 
-The notifications look like this:
-
-| Notification | Priority | Sent when |
-|---|---|---|
-| Alarm activated | high | An alarm activates and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| No longer alarming | default | An alarm clears (not sent for the initial state) and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| Notifications paused | max | The activation count reaches `NOTIFY_MAX_BEFORE_PAUSE` + 1, sent once |
-| Digest | default | Once per `STATS_PERIOD`, only if there was at least one alarm |
-
----
-
 <strong> The notifications look like this: </strong>
 
-| Notification | Priority | Sent when |
-|---|---|---|
-| Alarm activated | high | An alarm activates and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| No longer alarming | default | An alarm clears (not sent for the initial state) and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| Notifications paused | max | The activation count reaches `NOTIFY_MAX_BEFORE_PAUSE` + 1, sent once |
-| Digest | default | Once per `STATS_PERIOD`, only if there was at least one alarm |
+![ntfy-Notifications](.images/ntfy-notifications.png)
 
 ## Files
 
