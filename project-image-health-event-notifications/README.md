@@ -15,22 +15,18 @@ Turning that alarm off by hand is easy to forget to turn back on. The FixedIT Da
 
 <!-- toc -->
 
-- [How It Works](#how-it-works)
 - [Why Choose This Approach?](#why-choose-this-approach)
 - [Compatibility](#compatibility)
   - [AXIS OS Compatibility](#axis-os-compatibility)
   - [FixedIT Data Agent Compatibility](#fixedit-data-agent-compatibility)
+- [How It Works](#how-it-works)
 - [Quick Setup](#quick-setup)
-  - [Troubleshooting](#troubleshooting)
 - [Files](#files)
 - [Configuration Details](#configuration-details)
-  - [The Value Counter Processor](#the-value-counter-processor)
   - [The Cumulative Sum Processor](#the-cumulative-sum-processor)
   - [Ignoring the First Stateful Event](#ignoring-the-first-stateful-event)
-- [Local Testing on Host](#local-testing-on-host)
-  - [Prerequisites](#prerequisites)
-  - [Host Testing Limitations](#host-testing-limitations)
-  - [Test Commands](#test-commands)
+  - [Limitations With This Approach](#limitations-with-this-approach)
+
 
 <!-- tocstop -->
 
@@ -145,8 +141,6 @@ flowchart TD
 
    ![Pipeline-Data](.images/pipeline-data.png)
 
-   ---
-
 ### Example with Push Notifications
 
   This example builds on the simple example above. The same configuration also sends notifications, so here you subscribe to the topic on your phone and adjust the optional variables.
@@ -214,7 +208,7 @@ flowchart TD
 7. **Muting** (`processors.clone`) – Creates `*_notify` copies of events at or
    below `NOTIFY_MAX_BEFORE_PAUSE`, and one
    `health_event_notifications_paused` metric when the limit is exceeded.
-   
+
 8. **Outputs** – `outputs.file` prints to the Logs tab and `outputs.http`
    posts to ntfy. Each message type has its own output with its own title and
    priority.
