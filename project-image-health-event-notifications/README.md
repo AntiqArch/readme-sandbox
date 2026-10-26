@@ -15,22 +15,18 @@ Turning that alarm off by hand is easy to forget to turn back on. The FixedIT Da
 
 <!-- toc -->
 
-- [How It Works](#how-it-works)
 - [Why Choose This Approach?](#why-choose-this-approach)
 - [Compatibility](#compatibility)
   - [AXIS OS Compatibility](#axis-os-compatibility)
   - [FixedIT Data Agent Compatibility](#fixedit-data-agent-compatibility)
+- [How It Works](#how-it-works)
 - [Quick Setup](#quick-setup)
-  - [Troubleshooting](#troubleshooting)
 - [Files](#files)
 - [Configuration Details](#configuration-details)
-  - [The Value Counter Processor](#the-value-counter-processor)
   - [The Cumulative Sum Processor](#the-cumulative-sum-processor)
   - [Ignoring the First Stateful Event](#ignoring-the-first-stateful-event)
-- [Local Testing on Host](#local-testing-on-host)
-  - [Prerequisites](#prerequisites)
-  - [Host Testing Limitations](#host-testing-limitations)
-  - [Test Commands](#test-commands)
+  - [Limitations With This Approach](#limitations-with-this-approach)
+
 
 <!-- tocstop -->
 
@@ -119,7 +115,7 @@ flowchart TD
 
    In the camera web interface, go to Analytics → AXIS Image Health Analytics, start the application, and leave the detections you care about enabled (blocked, redirected, blurred, underexposed).
 
-![Axis-Image-Health-Analytics](.images/axis-image-health-analytics.png)
+   ![Axis-Image-Health-Analytics](.images/axis-image-health-analytics.png)
 
 2. **Disable the bundled config files**
 
@@ -131,15 +127,19 @@ flowchart TD
 
    The configuration also sends notifications to ntfy. On the Configuration tab, open Variables → "Extra Telegraf variables" and add `NTFY_TOPIC_URL` with the value `https://ntfy.sh/<your-topic>`, using a topic name that is hard to guess, for example `axis-image-health-7f3k9q2x`. You can ignore the notifications for now and just watch the Logs tab.
 
+   ![Extra-Telegraf-Variables](.images/extra-telegraf-variables.png)
+
 4. **Upload and enable `image-health-to-ntfy.conf`**
 
    Click Upload Config and upload `image-health-to-ntfy.conf`. Then enable it.
+
+   ![Upload-Config](.images/enable-config.png)
 
 5. **Open the Logs tab**
 
    Go to the `Logs -> Pipeline Data` tab and you should see the first state being reported. Since the event is stateful, the first report will be the current state. The next report will come whenever the state changes.
 
-   ---
+   ![Pipeline-Data](.images/pipeline-data.png)
 
 ### Example with Push Notifications
 
@@ -157,7 +157,7 @@ flowchart TD
 
    On the Configuration tab, open Variables → "Extra Telegraf variables" and add:
 
-   | Variable | Required | Default | Description |
+   | Variable Name | Required | Default | Description |
    |---|---|---|---|
    | `NTFY_TOPIC_URL` | Yes | – | Full topic URL, e.g. `https://ntfy.sh/axis-image-health-7f3k9q2x`. Already set in the simple example above. |
    | `NOTIFY_MAX_BEFORE_PAUSE` | No | 5 | Number of activation notifications per cause before further ones are muted. A single "paused" notification is sent when this number is exceeded. |
@@ -170,25 +170,9 @@ flowchart TD
 
 5. **Trigger a test alarm**, for example by covering the lens, and check that a notification arrives on your phone and that the event shows up in the Logs tab.
 
-The notifications look like this:
-
-| Notification | Priority | Sent when |
-|---|---|---|
-| Alarm activated | high | An alarm activates and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| No longer alarming | default | An alarm clears (not sent for the initial state) and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| Notifications paused | max | The activation count reaches `NOTIFY_MAX_BEFORE_PAUSE` + 1, sent once |
-| Digest | default | Once per `STATS_PERIOD`, only if there was at least one alarm |
-
----
-
 <strong> The notifications look like this: </strong>
 
-| Notification | Priority | Sent when |
-|---|---|---|
-| Alarm activated | high | An alarm activates and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| No longer alarming | default | An alarm clears (not sent for the initial state) and the count is at most `NOTIFY_MAX_BEFORE_PAUSE` |
-| Notifications paused | max | The activation count reaches `NOTIFY_MAX_BEFORE_PAUSE` + 1, sent once |
-| Digest | default | Once per `STATS_PERIOD`, only if there was at least one alarm |
+![ntfy-Notifications](.images/ntfy-notifications.png)
 
 ## Files
 
@@ -202,22 +186,29 @@ The notifications look like this:
 
 1. **Input** (`inputs.execd`) – Subscribes to the stateful
    `AXISImageHealthAnalytics` event through `event_handler`.
+
 2. **State-change counter** (`processors.defaults` + `cumulative_sum`) –
    Gives every event `state_change = 1` and a running total
    `state_change_sum`, used to skip the first "clear".
+
 3. **Split** (`processors.override`) – Renames events to
    `health_event_activated` and `health_event_deactivated`.
+
 4. **Cause as tag** (`processors.converter`) – Turns the `Cause` field into a
    tag so each cause gets its own counters.
+
 5. **Summary** (`aggregators.valuecounter`) – Counts activations per cause and
    emits `image_health_stats` every `STATS_PERIOD`.
+
 6. **Incident counter** (`processors.defaults` + `inputs.mock` +
    `cumulative_sum`) – Adds `incident = 1` and a running total
    `incident_sum` per cause. The mock input sends a dummy metric every second
    so counters expire as soon as `ALARM_QUIET_PERIOD` has passed.
+
 7. **Muting** (`processors.clone`) – Creates `*_notify` copies of events at or
    below `NOTIFY_MAX_BEFORE_PAUSE`, and one
    `health_event_notifications_paused` metric when the limit is exceeded.
+
 8. **Outputs** – `outputs.file` prints to the Logs tab and `outputs.http`
    posts to ntfy. Each message type has its own output with its own title and
    priority.
