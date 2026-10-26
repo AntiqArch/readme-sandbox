@@ -136,10 +136,3 @@ The `BOOTSTRAP_TOKEN` matches the example token that is currently hardcoded in `
 
 </details>
 
----
-
-## Done!
-
-The device now sends data to the server every second, using a new token every 5 seconds.
-
----
