@@ -41,6 +41,15 @@ The messages are then pushed to an HTTP endpoint using the `outputs.http` plugin
 
 For more detailed instructions, please refer to the [QUICKSTART_GUIDE.md](./QUICKSTART_GUIDE.md) file.
 
+## Configuration
+
+The full configuration is defined in the `combined.conf` file. It contains the following sections:
+
+- `[agent]`: Global configuration for the Telegraf agent.
+- `[global_tags]`: Global tags applied to all metrics.
+- `[[inputs.socket_listener]]`: The input configuration for the socket listener.
+- `[[outputs.http]]`: The output configuration for the HTTP endpoint.
+
 ## Output format
 
 A full specification of the output format is available in the [API_SPEC.md](./API_SPEC.md) file.
